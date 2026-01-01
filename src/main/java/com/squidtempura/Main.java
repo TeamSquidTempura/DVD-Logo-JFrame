@@ -46,6 +46,7 @@ public class Main {
         new Timer(16, e -> {
             W = frame.getWidth();
             H = frame.getHeight();
+            size = (Main.H+Main.W)/20;
             x += (int)(speed * Math.sin(angle*Math.PI/180));
             y += (int)(speed * Math.cos(angle*Math.PI/180));
 
