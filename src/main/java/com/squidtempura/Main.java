@@ -2,6 +2,9 @@ package com.squidtempura;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Main {
@@ -22,25 +25,37 @@ public class Main {
                 Font.TRUETYPE_FONT,
                 Main.class.getResourceAsStream("/ti_logoso_tfb/TI logoso TFB.ttf")
         );
-        frame = new JFrame("test");
+        frame = new JFrame("dvd");
         display = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
         W = display.getWidth()/4;
         x = W/2;
         H = display.getHeight()/2;
         y = H/2;
         size = (Main.H+Main.W)/20;
-        speed = (float) W /100;
+        speed = (float) W/5000*size;
         angle = (float) (Math.random()*360);
         color = Color.WHITE;
         frame.setSize(W, H);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        frame.setUndecorated(true);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "invisible"));
         Canvas panel = new Canvas();
         panel.setBackground(Color.BLACK);
         frame.add(panel);
 
         frame.setVisible(true);
+
+        frame.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    System.exit(0);
+                }
+            }
+        });
+
+
 
         new Timer(16, e -> {
             W = frame.getWidth();
@@ -49,8 +64,8 @@ public class Main {
             x += (int)(speed * Math.sin(angle*Math.PI/180));
             y += (int)(speed * Math.cos(angle*Math.PI/180));
 
-            if (x-size/2 < 0) {
-                x = size/2;
+            if (x-size/4 < 0) {
+                x = size/4;
                 angle = 360 - angle;
                 color = new Color((int) (Math.random()*155+100), (int) (Math.random()*155+100), (int) (Math.random()*155+100));
             }
@@ -61,14 +76,14 @@ public class Main {
                 color = new Color((int) (Math.random()*155+100), (int) (Math.random()*155+100), (int) (Math.random()*155+100));
             }
 
-            if (y - size < 0) {
-                y = size;
+            if (y - size*3/4 < 0) {
+                y = size*3/4;
                 angle = 180 - angle;
                 color = new Color((int) (Math.random()*155+100), (int) (Math.random()*155+100), (int) (Math.random()*155+100));
             }
 
-            if (y + size > H) {
-                y = H - size;
+            if (y + size/4 > H) {
+                y = H - size/4;
                 angle = 180 - angle;
                 color = new Color((int) (Math.random()*155+100), (int) (Math.random()*155), (int) (Math.random()*155));
             }
